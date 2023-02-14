@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id            Int       @default(autoincrement()) @id
+  id            String       @default(uuid()) @id
   email         String    @unique
   name          String?
   profilePhoto  String?
@@ -20,12 +20,11 @@ model User {
 }
 
 model Message {
-  id            Int       @default(autoincrement()) @id
+  id            String       @id @default(uuid())
   text          String
   from          User      @relation(fields: [fromId], references: [id])
-  fromId        Int
-  toUserId      Int?
-  toGroupId     Int?
+  fromId        String
+  toId          String
   createdAt     DateTime  @default(now())
 }
 
