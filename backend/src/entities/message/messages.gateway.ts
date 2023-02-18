@@ -35,31 +35,8 @@ export class MessagesGateway {
     return message;
   }
 
-  // @SubscribeMessage('findAllMessages')
-  // findAll() {
-  //   return this.messagesService.findAll();
-  // }
-
-  @SubscribeMessage('join')
-  joinRoom(
-    @MessageBody('name') name: string,
-    @ConnectedSocket() client: Socket,
-  ) {
-    return this.messagesService.identify(name, client.id);
-  }
-
-  @SubscribeMessage('typing')
-  async typing(
-    @MessageBody('isTyping') isTyping: boolean,
-    @ConnectedSocket() client: Socket,
-  ) {
-    const name = await this.messagesService.getClientName(client.id);
-
-    client.broadcast.emit('typing', { name, isTyping });
-  }
-
-  @Get()
-  getHello(): string {
-    return this.messagesService.getHello();
+  @SubscribeMessage('findAllMessages')
+  findAll() {
+    return this.messagesService.findAll();
   }
 }

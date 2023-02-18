@@ -2,7 +2,7 @@ export class Message {
   id: string;
   text: string;
   from: object;
-  fromId: string;
-  toId: string;
-  createdAt: Date;
+  from_id: string;
+  to_id: string;
+  created_at: Date;
 }
