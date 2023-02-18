@@ -3,28 +3,23 @@ import ReactDOM from "react-dom/client";
 import MainPage from "./pages/MainPage";
 import ChatPage from "./pages/ChatPage";
 import AuthPage from "./pages/AuthPage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <MainPage />,
-  },
-  {
-    path: "/chat/:chatId",
-    element: <ChatPage />,
-  },
-  {
-    path: "/auth",
-    element: <AuthPage />,
-  },
-]);
+import { AuthProvider } from "./hooks/authProvider";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./index.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <main className="bg-zinc-900 min-h-screen h-full  ">
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainPage />}>
+              <Route path="/chat/:chatId" element={<ChatPage />} />
+            </Route>
+            <Route path="/auth" element={<AuthPage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
     </main>
   </React.StrictMode>
 );
