@@ -1,26 +1,35 @@
+import dayjs from "dayjs";
+import { useUserStore } from "../stores/userStore";
+
 export type messageProps = {
-  id: string;
+  id?: string;
   text: string;
-  senderId: string;
-  createdAt: string;
+  from_id: string;
+  to_id: string;
+  created_at?: Date;
 };
 
-export default function Message({
-  id,
-  text,
-  senderId,
-  createdAt,
-}: messageProps) {
+export default function Message({ from_id, text, created_at }: messageProps) {
+  const user = useUserStore((state) => state.user);
+  const hours = dayjs(created_at).hour();
+  const minutes =
+    dayjs(created_at).minute() <= 9
+      ? `0${dayjs(created_at).minute()}`
+      : dayjs(created_at).minute();
+  const isOwner = from_id === user.id;
+
   return (
-    <div className={`flex ${id === senderId ? "justify-end" : null}`}>
+    <div className={`flex ${isOwner ? "justify-end" : null}`}>
       <div
-        className={`text-white flex relative ${
-          id === senderId ? "bg-indigo-500" : "bg-zinc-700"
-        } pl-2 pr-4 py-1 w-fit m-2 rounded-lg`}
+        className={`text-white relative flex ${
+          isOwner ? "bg-indigo-500" : "bg-zinc-800"
+        } pl-2.5 pr-12 py-1 mb-3 max-w-[29rem] rounded-xl`}
       >
-        <p className="">{text}</p>
-        <span className="text-xs relative top-2 left-2 text-white opacity-70">
-          {createdAt}
+        <div className="break-words whitespace-pre-wrap max-w-[26rem] flow-root">
+          {text}
+        </div>
+        <span className="text-xs absolute bottom-1 right-2 text-white opacity-40">
+          {hours}:{minutes}
         </span>
       </div>
     </div>
