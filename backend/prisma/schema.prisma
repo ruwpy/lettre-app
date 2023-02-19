@@ -6,30 +6,38 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String       @default(uuid()) @id
-  email         String    @unique
-  name          String?
-  profilePhoto  String?
-  messages      Message[]
-  groups        Group[]
+  id              String        @id         @db.Uuid        @default(uuid()) 
+  email           String        @unique
+  name            String
+  profile_photo   String
+  messages        Message[]
+  groups          Group[]
+  chats           Chat[]
 }
 
 model Message {
-  id            String       @id @default(uuid())
-  text          String
-  from          User      @relation(fields: [fromId], references: [id])
-  fromId        String
-  toId          String
-  createdAt     DateTime  @default(now())
+  id             String         @id         @db.Uuid        @default(uuid())
+  text           String
+  from           User           @relation(fields: [from_id], references: [id])
+  from_id        String         @db.Uuid
+  to_id          String
+  created_at     DateTime       @default(now())
+}
+
+model Chat {
+  id             String         @id         @db.Uuid      @default(uuid())     
+  from           User           @relation(fields: [from_id], references: [id])
+  from_id        String         @db.Uuid
+  to_id          String
 }
 
 model Group {
-  id            Int       @default(autoincrement()) @id
-  groupName     String?
-  groupMembers  User[]
+  id             String         @id         @db.Uuid      @default(uuid())
+  group_name     String?
+  group_members  User[]
 }
