@@ -1,15 +1,8 @@
 import dayjs from "dayjs";
 import { useUserStore } from "../stores/userStore";
+import { TMessage } from "../types/message";
 
-export type messageProps = {
-  id?: string;
-  text: string;
-  from_id: string;
-  to_id: string;
-  created_at?: Date;
-};
-
-export default function Message({ from_id, text, created_at }: messageProps) {
+export default function Message({ from_id, text, created_at }: TMessage) {
   const user = useUserStore((state) => state.user);
   const hours = dayjs(created_at).hour();
   const minutes =
