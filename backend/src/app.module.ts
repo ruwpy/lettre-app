@@ -1,8 +1,14 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MessagesModule } from './entities/message/messages.module';
-import { ChatModule } from './entities/chat/chat.module';
+import { ContactModule } from './entities/contact/contact.module';
+import { ConversationModule } from './entities/conversation/conversation.module';
+import { VerifyJwtMiddleware } from './middleware/verifyJwt.middleware';
 
 @Module({
-  imports: [MessagesModule, ChatModule],
+  imports: [MessagesModule, ContactModule, ConversationModule],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(VerifyJwtMiddleware).forRoutes('contacts', 'conversation');
+  }
+}
