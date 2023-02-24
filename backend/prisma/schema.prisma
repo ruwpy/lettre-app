@@ -11,33 +11,38 @@ datasource db {
 }
 
 model User {
-  id              String        @id         @db.Uuid        @default(uuid()) 
-  email           String        @unique
-  name            String
+  id              String          @id         @db.Uuid        @default(uuid())      @unique
+  email           String          @unique
+  name            String          
   profile_photo   String
+  contacts        Contact[]
+  createdAt       DateTime        @default(now())
+}
+
+model Conversation {
+  id              String          @id         @db.Uuid        @default(uuid())      @unique
+  participants    String[]
   messages        Message[]
-  groups          Group[]
-  chats           Chat[]
+  contacts        Contact[]
+}
+
+model Contact {
+  id              String          @id         @db.Uuid        @default(uuid())      @unique
+  conversation    Conversation    @relation(fields: [conversation_id], references: [id])
+  conversation_id String          @db.Uuid
+  lastMessage     Json?
+  user            User?           @relation(fields: [user_id], references: [id])
+  user_id         String          @db.Uuid
+  contact_id      String          @db.Uuid
+  createdAt       DateTime        @default(now())
 }
 
 model Message {
-  id             String         @id         @db.Uuid        @default(uuid())
-  text           String
-  from           User           @relation(fields: [from_id], references: [id])
-  from_id        String         @db.Uuid
-  to_id          String
-  created_at     DateTime       @default(now())
-}
-
-model Chat {
-  id             String         @id         @db.Uuid      @default(uuid())     
-  from           User           @relation(fields: [from_id], references: [id])
-  from_id        String         @db.Uuid
-  to_id          String
-}
-
-model Group {
-  id             String         @id         @db.Uuid      @default(uuid())
-  group_name     String?
-  group_members  User[]
+  id              String          @id         @db.Uuid        @default(uuid())      @unique
+  text            String
+  sender_id       String          @db.Uuid
+  conversation    Conversation?   @relation(fields: [conversation_id], references: [id])
+  conversation_id String?         @db.Uuid
+  is_edited       Boolean         @default(false)
+  created_at      DateTime        @default(now())
 }
