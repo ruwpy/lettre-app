@@ -1,13 +1,22 @@
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
-import ChatBox from "../components/ChatBox";
+import { useEffect, useRef, useState } from "react";
+import Contact from "../components/Contact";
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserStore } from "../stores/userStore";
+import { useContactsStore } from "../stores/contactsStore";
+import User from "../components/User";
 
 export default function MainPage() {
   const [inputValue, setInputValue] = useState("");
   const user = useUserStore((state) => state.user);
+  const { setContacts, contacts } = useContactsStore((state) => state);
+
+  console.log(contacts);
+
+  useEffect(() => {
+    setContacts();
+  }, []);
 
   return user ? (
     <div className="flex">
@@ -26,7 +35,19 @@ export default function MainPage() {
           </span>
         </nav>
         <div className="overflow-y-scroll h-full">
-          <ChatBox id="awdwad" to_id="a1e503ab-7be4-463f-b8f1-9c467746a84b" />
+          {contacts.map((contact) => {
+            return (
+              <Contact
+                id={contact.id}
+                contact_id={contact.contact_id}
+                conversation_id={contact.conversation_id}
+                created_at={contact.created_at}
+                user_id={contact.user_id}
+                key={contact.id}
+              />
+            );
+          })}
+          {/* <User id="321" name="ruwpy" profile_photo="321" /> */}
         </div>
       </aside>
       <Outlet />
