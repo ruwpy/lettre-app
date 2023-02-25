@@ -1,27 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Message } from '@prisma/client';
+import { Message as MessageModel } from '@prisma/client';
 
 @Injectable()
 export class MessagesService {
   constructor(private prisma: PrismaService) {}
 
-  async createMessage(data: Message): Promise<Message> {
-    return this.prisma.message.create({
+  async createMessage(data: MessageModel): Promise<MessageModel> {
+    return await this.prisma.message.create({
       data: {
-        from: {
+        conversation: {
           connect: {
-            id: data.from_id,
+            id: data.conversation_id,
           },
         },
         text: data.text,
-        to_id: '1',
+        sender_id: data.sender_id,
       },
     });
-  }
-
-  findAll() {
-    return this.prisma.message.findMany();
   }
 
   async typing(id: number) {

@@ -4,14 +4,8 @@ import {
   MessageBody,
 } from '@nestjs/websockets';
 import { MessagesService } from './messages.service';
-import { CreateMessageDto } from '../../dto/create-message.dto';
-import { UpdateMessageDto } from '../../dto/update-message.dto';
-import {
-  ConnectedSocket,
-  WebSocketServer,
-} from '@nestjs/websockets/decorators';
-import { Server, Socket } from 'socket.io';
-import { Get } from '@nestjs/common';
+import { WebSocketServer } from '@nestjs/websockets/decorators';
+import { Server } from 'socket.io';
 import { Message as MessageModel } from '@prisma/client';
 
 @WebSocketGateway({
@@ -28,15 +22,10 @@ export class MessagesGateway {
 
   @SubscribeMessage('createMessage')
   async create(
-    @MessageBody() createMessageDto: CreateMessageDto,
+    @MessageBody() messageData: MessageModel,
   ): Promise<MessageModel> {
-    const message = await this.messagesService.createMessage(createMessageDto);
+    const message = await this.messagesService.createMessage(messageData);
     this.server.emit('message', message);
     return message;
-  }
-
-  @SubscribeMessage('findAllMessages')
-  findAll() {
-    return this.messagesService.findAll();
   }
 }

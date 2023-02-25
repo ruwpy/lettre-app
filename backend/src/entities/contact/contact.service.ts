@@ -69,7 +69,7 @@ export class ContactService {
         user_id: user.sub,
       },
       orderBy: {
-        createdAt: 'asc',
+        updatedAt: 'asc',
       },
     });
 
@@ -98,6 +98,8 @@ export class ContactService {
         user_id: myId,
         contact_id: relatedUser.id,
         conversation_id: conversation.id,
+        contact_name: relatedUser.name,
+        contact_photo: relatedUser.profile_photo,
       },
     });
   }
