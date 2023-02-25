@@ -2,11 +2,18 @@ export interface IContact {
   id: string;
   conversation?: object;
   conversation_id: string;
-  lastMessage?: object;
+  lastMessage?: ILastMessage;
   user?: object;
   user_id: string;
   contact_id: string;
   created_at: Date;
+  contact_name: string;
+  contact_photo: string;
+}
+
+interface ILastMessage {
+  message_date: Date;
+  message_text: string;
 }
 
 export interface IConversation {

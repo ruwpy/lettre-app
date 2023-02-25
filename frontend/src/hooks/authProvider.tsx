@@ -14,12 +14,14 @@ export const AuthProvider = ({ children }: Props) => {
     const getSession = async () => {
       const session = await supabase.auth.getSession();
       setUser(session.data.session?.user);
+      localStorage.setItem("token", session.data.session?.access_token!);
       setLoading(false);
     };
     getSession();
 
     supabase.auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user);
+      localStorage.setItem("token", session?.access_token!);
       setLoading(false);
     });
   }, []);

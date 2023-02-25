@@ -1,20 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../api";
-import { useUserStore } from "../stores/userStore";
 import { IContact } from "../interfaces/index";
 
 export default function Contact({
-  id,
-  contact_id,
-  conversation,
   conversation_id,
-  created_at,
-  lastMessage,
-  user,
-  user_id,
+  contact_name,
+  contact_photo,
 }: IContact) {
-  const { chatId } = useParams();
-  const isCurrentPage: boolean = chatId === conversation_id;
+  const { conversationId } = useParams();
+  const isCurrentPage: boolean = conversationId === conversation_id;
   const navigate = useNavigate();
 
   const openConversation = () => {
@@ -29,18 +22,14 @@ export default function Contact({
       } rounded-xl m-2`}
     >
       <img
-        src="a"
+        src={contact_photo}
         alt="user image"
         className="rounded-xl w-14 h-14 object-contain"
       />
       <div className="flex-grow">
         <span className="inline-flex align-middle justify-between w-full">
-          <span className="text-white font-medium">ruwpy</span>
-          <span className="text-white opacity-40 whitespace-nowrap text-sm">
-            {"19 feb"}
-          </span>
+          <span className="text-white font-medium">{contact_name}</span>
         </span>
-        <p className="text-gray-300">{"hi"}</p>
       </div>
     </div>
   );

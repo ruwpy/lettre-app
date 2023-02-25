@@ -1,21 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { IUser } from "../interfaces/index";
 import { ContactService } from "../api/services/contact.service";
+import { useContactsStore } from "../stores/contactsStore";
 
-export default function Contact({ id, name, profile_photo }: IUser) {
+export default function User({ id, name, profile_photo }: IUser) {
   const navigate = useNavigate();
+  const { contacts } = useContactsStore();
+  const contactExist = contacts.filter(
+    (contact) => contact.contact_id === id
+  )[0];
 
   const createChat = async () => {
-    const contact = await ContactService.createContact(
-      "bff995f9-b224-4268-b119-1c0ef36d780d"
-    );
-    if (contact) navigate("chat/" + contact.data.conversation_id);
+    if (!contactExist) {
+      const contact = await ContactService.createContact(id);
+      if (contact) navigate("chat/" + contact.data.conversation_id);
+    }
+    navigate("chat/" + contactExist.conversation_id);
   };
 
   return (
     <div
       onClick={() => createChat()}
-      className={`flex p-2 gap-3 cursor-pointer hover:bg-zinc-700 rounded-xl m-2`}
+      className={`flex p-2 gap-3 cursor-pointer hover:bg-zinc-700 rounded-xl`}
     >
       <img
         src={profile_photo}

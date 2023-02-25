@@ -9,12 +9,12 @@ import "./index.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <main className="bg-zinc-900 min-h-screen h-full  ">
+    <main className="bg-zinc-900 min-h-screen h-full overflow-hidden">
       <AuthProvider>
         <Router>
           <Routes>
             <Route path="/" element={<MainPage />}>
-              <Route path="/chat/:chatId" element={<ChatPage />} />
+              <Route path="/chat/:conversationId" element={<ChatPage />} />
             </Route>
             <Route path="/auth" element={<AuthPage />} />
           </Routes>
