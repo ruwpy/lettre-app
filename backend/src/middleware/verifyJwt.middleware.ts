@@ -8,6 +8,8 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 export class VerifyJwtMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     try {
+      if (req.headers['authorization'] === undefined)
+        throw new UnauthorizedException();
       const user = <JwtPayload>(
         verify(
           req.headers['authorization'].split(' ')[1],
