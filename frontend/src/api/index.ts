@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = "http://localhost:3002/";
+export const API_URL = "https://lettre.giftto.ru/";
 
 const accessToken: string = localStorage.getItem("token")!;
 

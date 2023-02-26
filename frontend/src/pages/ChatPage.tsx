@@ -8,7 +8,7 @@ import { useUserStore } from "../stores/userStore";
 import { useConversationStore } from "../stores/conversationStore";
 import { useContactsStore } from "../stores/contactsStore";
 
-const socket = io("ws://localhost:3002");
+const socket = io("wss://lettre.giftto.ru/");
 
 export default function ChatPage() {
   const scrollToBottom = useRef<any>();
